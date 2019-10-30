@@ -1,0 +1,30 @@
+import 'dotenv/config';
+
+import express from 'express';
+import routes from './routes';
+import './database';
+
+class App {
+  constructor() {
+    this.server = express();
+    this.middlewares();
+    this.routes();
+
+    process.on('SIGINT', () => {
+      process.exit();
+    });
+    process.on('error', function(err) {
+      console.log(err);
+    });
+  }
+
+  middlewares() {
+    this.server.use(express.json());
+  }
+
+  routes() {
+    this.server.use(routes);
+  }
+}
+
+export default new App().server;
